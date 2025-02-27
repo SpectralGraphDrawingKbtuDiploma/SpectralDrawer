@@ -14,7 +14,7 @@ RUN apt-get update && apt-get install -y \
   unzip \
   && apt-get clean
 
-ENV GRPC_RELEASE_TAG latest
+ENV GRPC_RELEASE_TAG v1.70.1
 
 RUN git clone -b ${GRPC_RELEASE_TAG} https://github.com/grpc/grpc /var/local/git/grpc && \
     cd /var/local/git/grpc && \
