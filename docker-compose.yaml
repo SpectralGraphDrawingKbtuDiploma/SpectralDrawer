@@ -1,0 +1,13 @@
+version: "3"
+services:
+  server:
+    build: .
+    command: ["./build/server"]
+    ports:
+      - "50051:50051"
+
+  client:
+    build: .
+    command: ["./build/client"]
+    depends_on:
+      - server

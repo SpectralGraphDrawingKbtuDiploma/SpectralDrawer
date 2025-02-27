@@ -1,0 +1,15 @@
+cmake_minimum_required(VERSION 3.14)
+project(MyGRPCProject)
+
+find_package(Protobuf REQUIRED)
+find_package(gRPC REQUIRED)
+
+set(PROTO_SRC service.proto)
+protobuf_generate_cpp(PROTO_SRCS PROTO_HDRS ${PROTO_SRC})
+grpc_generate_cpp(GRPC_SRCS GRPC_HDRS ${PROTO_SRC})
+
+add_executable(server src/server.cpp ${PROTO_SRCS} ${PROTO_HDRS} ${GRPC_SRCS} ${GRPC_HDRS})
+add_executable(client src/client.cpp ${PROTO_SRCS} ${PROTO_HDRS} ${GRPC_SRCS} ${GRPC_HDRS})
+
+target_link_libraries(server gRPC::grpc++ protobuf::libprotobuf)
+target_link_libraries(client gRPC::grpc++ protobuf::libprotobuf)
