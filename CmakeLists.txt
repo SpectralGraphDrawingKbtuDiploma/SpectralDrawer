@@ -1,11 +1,20 @@
 cmake_minimum_required(VERSION 3.10)
-project(Calculator)
+project(grpc_server)
+
+set(CMAKE_CXX_STANDARD 17)
 
 find_package(gRPC REQUIRED)
 find_package(Protobuf REQUIRED)
 
-add_executable(server server.cpp generated/calculator.grpc.pb.cc generated/calculator.pb.cc)
-target_link_libraries(server gRPC::grpc++ protobuf::libprotobuf)
+add_library(helloworld_proto
+    helloworld.pb.cc
+    helloworld.grpc.pb.cc
+)
 
-add_executable(client client.cpp generated/calculator.grpc.pb.cc generated/calculator.pb.cc)
-target_link_libraries(client gRPC::grpc++ protobuf::libprotobuf)
+target_link_libraries(helloworld_proto
+    gRPC::grpc++
+    protobuf::libprotobuf
+)
+
+add_executable(server server.cpp)
+target_link_libraries(server helloworld_proto gRPC::grpc++ protobuf::libprotobuf)
