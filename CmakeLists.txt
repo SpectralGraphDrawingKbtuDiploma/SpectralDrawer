@@ -1,15 +1,11 @@
-cmake_minimum_required(VERSION 3.14)
-project(MyGRPCProject)
+cmake_minimum_required(VERSION 3.10)
+project(Calculator)
 
-find_package(Protobuf REQUIRED)
 find_package(gRPC REQUIRED)
+find_package(Protobuf REQUIRED)
 
-set(PROTO_SRC service.proto)
-protobuf_generate_cpp(PROTO_SRCS PROTO_HDRS ${PROTO_SRC})
-grpc_generate_cpp(GRPC_SRCS GRPC_HDRS ${PROTO_SRC})
-
-add_executable(server src/server.cpp ${PROTO_SRCS} ${PROTO_HDRS} ${GRPC_SRCS} ${GRPC_HDRS})
-add_executable(client src/client.cpp ${PROTO_SRCS} ${PROTO_HDRS} ${GRPC_SRCS} ${GRPC_HDRS})
-
+add_executable(server server.cpp generated/calculator.grpc.pb.cc generated/calculator.pb.cc)
 target_link_libraries(server gRPC::grpc++ protobuf::libprotobuf)
+
+add_executable(client client.cpp generated/calculator.grpc.pb.cc generated/calculator.pb.cc)
 target_link_libraries(client gRPC::grpc++ protobuf::libprotobuf)
